@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Similarity App</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Text Similarity App</h1>
+    <div>
+        <label for="text1">Text 1:</label>
+        <textarea id="text1" rows="4" cols="50"></textarea>
+    </div>
+    <div>
+        <label for="text2">Text 2:</label>
+        <textarea id="text2" rows="4" cols="50"></textarea>
+    </div>
+    <button onclick="calculateSimilarity()">Calculate Similarity</button>
+    <div id="result"></div>
+
+    <script>
+        function calculateSimilarity() {
+            var text1 = document.getElementById("text1").value;
+            var text2 = document.getElementById("text2").value;
+            
+            // Prepare data object
+            var data = {
+                "text1": text1,
+                "text2": text2
+            };
+    
+            // Make POST request to Flask backend
+            $.ajax({
+                type: "POST",
+                url: "/home",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    // Display results
+                    var resultElement = document.getElementById("result");
+                    resultElement.innerHTML = `
+                        <p>Similarity using TF-IDF: ${response.similarity_score_using_TFIDF.toFixed(4)}</p>
+                        <p>Similarity using embeddings: ${response.similarity_score_using_embeddings.toFixed(4)}</p>
+                    `;
+                },
+                error: function(error) {
+                    console.error("Error:", error.responseText);
+                    var resultElement = document.getElementById("result");
+                    resultElement.innerHTML = `<p>Error: ${error.responseText}</p>`;
+                }
+            });
+        }
+    </script>
+    
+</body>
+</html>
