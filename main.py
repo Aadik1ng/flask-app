@@ -5,7 +5,7 @@ import spacy
 import numpy as np
 
 app = Flask(__name__)
-nlp = spacy.load("en_core_web_lg")
+# nlp = spacy.load("en_core_web_lg")
 
 def preprocess_text(text):
     doc = nlp(text)
@@ -20,21 +20,22 @@ def calculate_similarity(text1, text2):
     tfidf_matrix = tfidf_vectorizer.fit_transform([text1_cleaned, text2_cleaned])
     
     similarity_score_tfidf = cosine_similarity(tfidf_matrix)[0, 1]
-    similarity_score_embeddings = embed(text1_cleaned, text2_cleaned)
+    # similarity_score_embeddings = embed(text1_cleaned, text2_cleaned)
     
     # Convert similarity scores to standard Python floats
     similarity_score_tfidf = float(similarity_score_tfidf)
-    similarity_score_embeddings = float(similarity_score_embeddings)
+    # similarity_score_embeddings = float(similarity_score_embeddings)
     
-    return similarity_score_tfidf, similarity_score_embeddings
+    return similarity_score_tfidf
+    # , similarity_score_embeddings
 
-def embed(text1_cleaned, text2_cleaned):
-    vector1 = nlp(text1_cleaned).vector
-    vector2 = nlp(text2_cleaned).vector
+# def embed(text1_cleaned, text2_cleaned):
+#     vector1 = nlp(text1_cleaned).vector
+#     vector2 = nlp(text2_cleaned).vector
     
-    similarity_score_embeddings = cosine_similarity(vector1.reshape(1, -1), vector2.reshape(1, -1))[0, 0]
+#     similarity_score_embeddings = cosine_similarity(vector1.reshape(1, -1), vector2.reshape(1, -1))[0, 0]
     
-    return similarity_score_embeddings
+#     return similarity_score_embeddings
 
 @app.route('/')
 def index():
@@ -49,12 +50,11 @@ def home():
     text2 = request.json['text2']
 
     try:
-        similarity_score_tfidf, similarity_score_embeddings = calculate_similarity(text1, text2)
+        similarity_score_tfidf = calculate_similarity(text1, text2)
 
         response = {
-            'similarity_score_using_TFIDF': similarity_score_tfidf,
-            'similarity_score_using_embeddings': similarity_score_embeddings
-        }
+            'similarity_score_using_TFIDF': similarity_score_tfidf}
+            # 'similarity_score_using_embeddings': similarity_score_embeddings}
 
         return jsonify(response), 200
 
@@ -62,4 +62,4 @@ def home():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=True)
