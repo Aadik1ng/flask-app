@@ -2,10 +2,10 @@
   "name": "my-flask-app",
   "buildCommand": "python -m spacy download en_core_web_lg",
   "builds": [
-    { "src": "app.py", "use": "@railway/python" }
+    { "src": "main.py", "use": "@railway/python" }
   ],
   "routes": [
-    { "src": "/", "dest": "app.py" }
+    { "src": "/", "dest": "main.py" }
   ],
   "env": {
     "FLASK_ENV": "production",
