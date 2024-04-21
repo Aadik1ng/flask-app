@@ -1,4 +1,6 @@
 Flask
+flask_cors
+
 scikit-learn
 spacy
 Werkzeug
