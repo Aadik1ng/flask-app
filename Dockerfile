@@ -24,7 +24,7 @@ RUN apt-get update \
 # Install spaCy and English model
 RUN pip install -U pip
 RUN pip install spacy
-RUN python -m spacy download en_core_web_lg
+RUN python -m spacy download en_core_web_sm
 
 # Set the working directory in the container
 WORKDIR /app
