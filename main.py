@@ -21,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-nlp = spacy.load("en_core_web_lg")
+nlp = spacy.load("en_core_web_sm")
 
 def preprocess_text(text):
     doc = nlp(text)
