@@ -1,6 +1,6 @@
 Flask
 flask_cors
-
+Hypercorn
 scikit-learn
 spacy
 Werkzeug
