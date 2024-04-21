@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Similarity App</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
 <body>
     <h1>Text Similarity App</h1>
@@ -31,27 +32,6 @@
             };
     
             // Make POST request to Flask backend
-            fetch('/home', {
-    method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(response => {
-            // Display results
-            var resultElement = document.getElementById("result");
-            resultElement.innerHTML = `
-                <p>Similarity using TF-IDF: ${response.similarity_score_using_TFIDF.toFixed(4)}</p>
-                <p>Similarity using embeddings: ${response.similarity_score_using_embeddings.toFixed(4)}</p>
-            `;
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            var resultElement = document.getElementById("result");
-            resultElement.innerHTML = `<p>Error: ${error}</p>`;
-        });
             // $.ajax({
             //     type: "POST",
             //     url: "/home",
@@ -71,6 +51,32 @@
             //         resultElement.innerHTML = `<p>Error: ${error.responseText}</p>`;
             //     }
             // });
+            // convert above code to fetch
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                var resultElement = document.getElementById("result");
+                resultElement.innerHTML = `
+                    <p>Similarity using TF-IDF: ${data.similarity_score_using_TFIDF.toFixed(4)}</p>
+                    <p>Similarity using embeddings: ${data.similarity_score_using_embeddings.toFixed(4)}</p>
+                `;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                var resultElement = document.getElementById("result");
+                resultElement.innerHTML = `
+                    <p>Similarity using TF-IDF: 0.000</p>
+                    <p>Similarity using embeddings: 0.000</p>
+                `;
+            });
+
         }
     </script>
     
