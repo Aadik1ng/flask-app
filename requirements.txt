@@ -6,4 +6,3 @@ gunicorn
 fastapi
 uvicorn
 jinja2
-en_core_web_lg
