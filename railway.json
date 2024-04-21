@@ -1,18 +1,11 @@
 {
-  "name": "my-flask-app",
-  "buildCommand": "python -m spacy download en_core_web_lg",
-  "builds": [
-    { "src": "main.py", "use": "@railway/python" }
-  ],
-  "routes": [
-    { "src": "/", "dest": "main.py" }
-  ],
-  "env": {
-    "FLASK_ENV": "production",
-    "SPACY_WARNING_IGNORE": "W008"
-  },
-  "expose": ["8080"],
-  "addons": {
-    "gunicorn": "latest"
-  }
+    "$schema": "https://railway.app/railway.schema.json",
+    "build": {
+        "builder": "NIXPACKS"
+    },
+    "deploy": {
+        "startCommand": "gunicorn main:app",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+    }
 }
