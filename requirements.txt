@@ -6,4 +6,4 @@ gunicorn
 fastapi
 uvicorn
 jinja2
-en_core_web_lg>=3.0,<4.0
+en_core_web_lg
