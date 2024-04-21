@@ -43,7 +43,7 @@ def calculate_similarity(text1, text2):
 def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/home/")
+@app.post("/")
 async def home(request: Request):
     data = await request.json()
 
@@ -55,8 +55,6 @@ async def home(request: Request):
 
     try:
         similarity_score_tfidf = calculate_similarity(text1, text2)
-
-        # Calculate similarity using SpaCy embeddings
         similarity_score_embeddings = embed(text1, text2)
 
         response = {
@@ -67,7 +65,7 @@ async def home(request: Request):
         return JSONResponse(content=response, status_code=200)
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(e)
 
 def embed(text1, text2):
     text1_cleaned = preprocess_text(text1)
@@ -76,8 +74,9 @@ def embed(text1, text2):
     vector1 = nlp(text1_cleaned).vector
     vector2 = nlp(text2_cleaned).vector
 
-    similarity_score = float(cosine_similarity(vector1.reshape(1, -1), vector2.reshape(1, -1))[0, 0])
+    similarity_score = cosine_similarity(vector1.reshape(1, -1), vector2.reshape(1, -1))[0, 0]
+    similarity_score = np.float64(similarity_score)
 
     return similarity_score
 
-
+# fast api start
