@@ -31,25 +31,46 @@
             };
     
             // Make POST request to Flask backend
-            $.ajax({
-                type: "POST",
-                url: "/home",
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success: function(response) {
-                    // Display results
-                    var resultElement = document.getElementById("result");
-                    resultElement.innerHTML = `
-                        <p>Similarity using TF-IDF: ${response.similarity_score_using_TFIDF.toFixed(4)}</p>
-                        <p>Similarity using embeddings: ${response.similarity_score_using_embeddings.toFixed(4)}</p>
-                    `;
-                },
-                error: function(error) {
-                    console.error("Error:", error.responseText);
-                    var resultElement = document.getElementById("result");
-                    resultElement.innerHTML = `<p>Error: ${error.responseText}</p>`;
-                }
-            });
+            fetch('/home', {
+    method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(response => {
+            // Display results
+            var resultElement = document.getElementById("result");
+            resultElement.innerHTML = `
+                <p>Similarity using TF-IDF: ${response.similarity_score_using_TFIDF.toFixed(4)}</p>
+                <p>Similarity using embeddings: ${response.similarity_score_using_embeddings.toFixed(4)}</p>
+            `;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            var resultElement = document.getElementById("result");
+            resultElement.innerHTML = `<p>Error: ${error}</p>`;
+        });
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/home",
+            //     contentType: "application/json",
+            //     data: JSON.stringify(data),
+            //     success: function(response) {
+            //         // Display results
+            //         var resultElement = document.getElementById("result");
+            //         resultElement.innerHTML = `
+            //             <p>Similarity using TF-IDF: ${response.similarity_score_using_TFIDF.toFixed(4)}</p>
+            //             <p>Similarity using embeddings: ${response.similarity_score_using_embeddings.toFixed(4)}</p>
+            //         `;
+            //     },
+            //     error: function(error) {
+            //         console.error("Error:", error.responseText);
+            //         var resultElement = document.getElementById("result");
+            //         resultElement.innerHTML = `<p>Error: ${error.responseText}</p>`;
+            //     }
+            // });
         }
     </script>
     
