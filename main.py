@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
@@ -56,6 +55,8 @@ async def home(request: Request):
 
     try:
         similarity_score_tfidf = calculate_similarity(text1, text2)
+
+        # Calculate similarity using SpaCy embeddings
         similarity_score_embeddings = embed(text1, text2)
 
         response = {
@@ -75,9 +76,10 @@ def embed(text1, text2):
     vector1 = nlp(text1_cleaned).vector
     vector2 = nlp(text2_cleaned).vector
 
-    similarity_score = cosine_similarity(vector1.reshape(1, -1), vector2.reshape(1, -1))[0, 0]
-    similarity_score = np.float64(similarity_score)
+    similarity_score = float(cosine_similarity(vector1.reshape(1, -1), vector2.reshape(1, -1))[0, 0])
 
     return similarity_score
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
