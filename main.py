@@ -79,3 +79,5 @@ def embed(text1, text2):
     similarity_score = np.float64(similarity_score)
 
     return similarity_score
+if __name__ == '__main__':
+    app.run(debug=True)
